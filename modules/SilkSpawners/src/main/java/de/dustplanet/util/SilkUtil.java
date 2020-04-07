@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 
+import de.dustplanet.silkspawners.compat.NMSHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -129,7 +130,10 @@ public class SilkUtil {
      * @return true if a valid NMSHandler could be found, false for not
      */
     private boolean setupNMSProvider() {
-        String version = plugin.getNMSVersion();
+        this.nmsProvider = new NMSHandler();
+        return true;
+
+        /*String version = plugin.getNMSVersion();
         
         // Rare cases might trigger API usage before SilkSpawners
         if (version == null) {
@@ -141,6 +145,7 @@ public class SilkUtil {
             final Class<?> clazz = Class.forName("de.dustplanet.silkspawners.compat." + version + ".NMSHandler");
             if (NMSProvider.class.isAssignableFrom(clazz)) {
                 nmsProvider = (NMSProvider) clazz.getConstructor().newInstance();
+                ((NMSHandler)nmsProvider).test();
                 plugin.getLogger().info("Loading support for " + version);
                 return true;
             }
@@ -154,6 +159,7 @@ public class SilkUtil {
             plugin.shutdown();
         }
         return false;
+        */
     }
 
     /**

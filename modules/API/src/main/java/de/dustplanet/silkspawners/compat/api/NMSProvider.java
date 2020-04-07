@@ -40,10 +40,8 @@ public interface NMSProvider {
 
     ItemStack newEggItem(String entityID, int amount);
 
-    @SuppressWarnings("unused")
-    default String getVanillaEggNBTEntityID(ItemStack item) {
-        return null;
-    }
+
+    String getVanillaEggNBTEntityID(ItemStack item);
 
     @SuppressWarnings("unused")
     default void displayBossBar(String title, String colorName, String styleName, Player player, Plugin plugin, int period) {

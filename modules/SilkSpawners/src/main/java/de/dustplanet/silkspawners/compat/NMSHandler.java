@@ -1,16 +1,6 @@
-package de.dustplanet.silkspawners.compat.v1_15_R1;
+package de.dustplanet.silkspawners.compat;
 
-import net.minecraft.server.v1_15_R1.Entity;
-import net.minecraft.server.v1_15_R1.EntityTypes;
-import net.minecraft.server.v1_15_R1.IRegistry;
-import net.minecraft.server.v1_15_R1.Item;
-import net.minecraft.server.v1_15_R1.MinecraftKey;
-import net.minecraft.server.v1_15_R1.NBTTagCompound;
-import net.minecraft.server.v1_15_R1.RegistryID;
-import net.minecraft.server.v1_15_R1.RegistryMaterials;
-import net.minecraft.server.v1_15_R1.TileEntityMobSpawner;
-import net.minecraft.server.v1_15_R1.TileEntityTypes;
-import net.minecraft.server.v1_15_R1.World;
+import net.minecraft.server.v1_15_R1.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -27,6 +17,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.material.MonsterEggs;
+import org.bukkit.material.SpawnEgg;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -70,7 +62,6 @@ public class NMSHandler implements NMSProvider {
             Arrays.stream(Material.values())
                 .filter(material -> material.name().endsWith("_SPAWN_EGG"))
                 .collect(Collectors.toList()));
-
     }
 
     @Override
@@ -217,21 +208,24 @@ public class NMSHandler implements NMSProvider {
         net.minecraft.server.v1_15_R1.ItemStack itemStack = null;
         CraftItemStack craftStack = CraftItemStack.asCraftCopy(item);
         itemStack = CraftItemStack.asNMSCopy(craftStack);
-        NBTTagCompound tag = itemStack.getTag();
+        NBTTagCompound tag = itemStack.getOrCreateTag();
 
         if (tag == null || !tag.hasKey("SilkSpawners")) {
             return null;
         }
+
         return tag.getCompound("SilkSpawners").getString("entity");
     }
 
     @Override
     @Nullable
     public String getVanillaNBTEntityID(ItemStack item) {
+
         net.minecraft.server.v1_15_R1.ItemStack itemStack = null;
         CraftItemStack craftStack = CraftItemStack.asCraftCopy(item);
         itemStack = CraftItemStack.asNMSCopy(craftStack);
-        NBTTagCompound tag = itemStack.getTag();
+
+        NBTTagCompound tag = itemStack.getOrCreateTag();
 
         if (tag == null || !tag.hasKey("BlockEntityTag")) {
             return null;
@@ -303,13 +297,15 @@ public class NMSHandler implements NMSProvider {
         net.minecraft.server.v1_15_R1.ItemStack itemStack = null;
         CraftItemStack craftStack = CraftItemStack.asCraftCopy(item);
         itemStack = CraftItemStack.asNMSCopy(craftStack);
-        NBTTagCompound tag = itemStack.getTag();
+        NBTTagCompound tag = itemStack.getOrCreateTag();
+
 
         if (tag == null || !tag.hasKey("EntityTag")) {
             return null;
         }
 
         tag = tag.getCompound("EntityTag");
+
         if (tag.hasKey("id")) {
             return tag.getString("id").replace("minecraft:", "");
         }
